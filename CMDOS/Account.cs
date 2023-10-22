@@ -8,12 +8,7 @@ namespace CMDOS
 {
     internal class Account
     {
-        private string? _username;
-        private string? _password;
-        private Guid? _id;
-        private int? _privilege;
-        private MailAccount? _mailAccount;
-
+        public Account() { }
         public Account(string username, string password, int privilege)
         {
             Id = Guid.NewGuid();
@@ -22,31 +17,17 @@ namespace CMDOS
             Privilege = privilege;
             MailAccount = new MailAccount();
         }
+        public Account(string username, string password, int privilege, bool deletable)
+            : this(username, password, privilege)
+        {
+            Deletable = deletable;
+        }
 
-        public string? Username
-        {
-            get { return _username; }
-            set { _username = value; }
-        }
-        public string? Password
-        {
-            get { return _password; }
-            set { _password = value; }
-        }
-        public Guid? Id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
-        public int? Privilege
-        {
-            get { return _privilege; }
-            set { _privilege = value; }
-        }
-        public MailAccount? MailAccount
-        {
-            get { return _mailAccount; }
-            set { _mailAccount = value; }
-        }
+        public string? Username { get; set; }
+        public string? Password { get; set; }
+        public Guid? Id { get; set; }
+        public int? Privilege { get; set; }
+        public MailAccount? MailAccount { get; set; }
+        public bool? Deletable { get; set; }
     }
 }
