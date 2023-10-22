@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace CMDOS
 {
     internal class Session
     {
-        private List<Account> _accounts = new List<Account>();
-        private Account? _user;
-        private bool _running = true;
-
         AppData Data = AppData.Default;
 
         public ReturnCode.Login Login()
@@ -21,7 +19,7 @@ namespace CMDOS
             string? userInput = Input.Lower();
             Console.Write("Password: ");
             string? passInput = Console.ReadLine();
-            Account? attemptAcc = Accounts.FirstOrDefault(x => x.Username == userInput && x.Password == userInput);
+            Account? attemptAcc = Accounts.FirstOrDefault(x => x.Username == userInput && x.Password == passInput);
             if (attemptAcc != null)
             {
                 User = attemptAcc;
@@ -36,7 +34,7 @@ namespace CMDOS
 
         public Session()
         {
-            
+            Accounts = JsonConvert.DeserializeObject<List<Account>>(Data.Accounts) ?? new List<Account>();
         }
 
         public void LoadSession()
@@ -44,24 +42,14 @@ namespace CMDOS
             if (Data.FirstBoot)
             {
                 Data.FirstBoot = false;
-                
+                Accounts.Add(new Account("root", "root", 999, false));
+                Data.Accounts = JsonConvert.SerializeObject(Accounts);
+                Data.Save();
             }
         }
 
-        public List<Account> Accounts
-        {
-            get { return _accounts; }
-            set { _accounts = value; }
-        }
-        public Account? User
-        {
-            get { return _user; }
-            set { _user = value; }
-        }
-        public bool Running
-        {
-            get { return _running; }
-            set { _running = value; }
-        }
+        public List<Account> Accounts { get; set; }
+        public Account? User { get; set; }
+        public bool Running { get; set; } = true;
     }
 }

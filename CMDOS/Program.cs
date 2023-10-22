@@ -7,7 +7,7 @@ while (session.Running)
 {
     while (session.Login() != ReturnCode.Login.Success)
     {
-        Console.WriteLine("Incorrect username or password.");
+        Console.WriteLine("Invalid Credentials.");
     }
     while (session.User != null)
     {
