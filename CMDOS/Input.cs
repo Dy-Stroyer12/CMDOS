@@ -13,12 +13,14 @@ namespace CMDOS
             string input = string.Empty;
             while (true)
             {
-                ConsoleKeyInfo key = Console.ReadKey();
+                ConsoleKeyInfo key = Console.ReadKey(true);
                 if (key.Key == ConsoleKey.Enter)
                 {
+                    Console.WriteLine(string.Empty);
                     return input;
                 }
-                input.Append(key.KeyChar);
+                Console.Write("*");
+                input += key.KeyChar;
             }
         }
 

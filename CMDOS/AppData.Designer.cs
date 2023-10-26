@@ -46,5 +46,17 @@ namespace CMDOS {
                 this["Accounts"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FileSystem {
+            get {
+                return ((string)(this["FileSystem"]));
+            }
+            set {
+                this["FileSystem"] = value;
+            }
+        }
     }
 }

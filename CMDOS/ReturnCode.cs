@@ -10,9 +10,17 @@ namespace CMDOS
     {
         internal enum Login
         {
+            Success,
             IncorrectPassword,
-            NonexistentUser,
-            Success
+            NonexistentUser
+        }
+        internal enum Command
+        {
+            Success,
+            InsufficientPrivilege,
+            InvalidArgs,
+            Failed,
+            Nonexistent
         }
     }
 }

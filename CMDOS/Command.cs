@@ -9,17 +9,15 @@ namespace CMDOS
 {
     internal class Command
     {
-        public Command(string name, int[] acceptedArgs, Action method, int privilege)
+        public Command(string name, Func<IEnumerable<string>, CommandReturn> run, int privilege)
         {
             Name = name;
-            AcceptedArgs = acceptedArgs;
-            Method = method;
+            Run = run;
             Privilege = privilege;
         }
 
         public string Name { get; set; }
-        public int[] AcceptedArgs { get; set; }
-        public Action Method { get; set; }
+        public Func<IEnumerable<string>, CommandReturn> Run { get; set; }
         public int Privilege { get; set; }
     }
 }
