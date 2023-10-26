@@ -12,13 +12,14 @@ namespace CMDOS
     internal class Session
     {
         AppData Data = AppData.Default;
+        public static Folder rootFolder = new Folder("", null);
 
         public ReturnCode.Login Login()
         {
             Console.Write("CMDOS Login: ");
             string? userInput = Input.Lower();
             Console.Write("Password: ");
-            string? passInput = Console.ReadLine();
+            string? passInput = Input.Password();
             Account? attemptAcc = Accounts.FirstOrDefault(x => x.Username == userInput && x.Password == passInput);
             if (attemptAcc != null)
             {
@@ -44,7 +45,31 @@ namespace CMDOS
                 Data.FirstBoot = false;
                 Accounts.Add(new Account("root", "root", 999, false));
                 Data.Accounts = JsonConvert.SerializeObject(Accounts);
+
+                rootFolder.Children.Add("home", new Folder("home", rootFolder));
+
                 Data.Save();
+            }
+            Commands.RegisterCommands();
+        }
+
+        public CommandReturn InputCommand(int privilege)
+        {
+            string? input = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return new CommandReturn(ReturnCode.Command.Success, string.Empty);
+            }
+            string[] inputSplit = input.Split(" ");
+            string[] args = inputSplit.Skip(1).ToArray();
+            Command? inputCmd = Commands.Registered.FirstOrDefault(x => x.Name == inputSplit[0]);
+            if (inputCmd != null)
+            {
+                return inputCmd.Run(args);
+            }
+            else
+            {
+                return new CommandReturn(ReturnCode.Command.Nonexistent, string.Empty);
             }
         }
 
